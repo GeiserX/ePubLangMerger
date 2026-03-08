@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 200" width="900" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF8F00"/>
+      <stop offset="100%" style="stop-color:#4E342E"/>
+    </linearGradient>
+    <linearGradient id="bookFill" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFF3E0;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#FFE0B2;stop-opacity:0.9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="200" rx="12" ry="12" fill="url(#bg)"/>
+
+  <!-- Subtle pattern overlay -->
+  <rect width="900" height="200" rx="12" ry="12" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+
+  <!-- Left book -->
+  <g transform="translate(100, 52)">
+    <!-- Book body -->
+    <rect x="0" y="0" width="50" height="70" rx="3" ry="3" fill="url(#bookFill)" stroke="#BF360C" stroke-width="1.5"/>
+    <!-- Spine -->
+    <line x1="5" y1="0" x2="5" y2="70" stroke="#BF360C" stroke-width="1.5"/>
+    <!-- Text lines -->
+    <line x1="12" y1="15" x2="42" y2="15" stroke="#BF360C" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    <line x1="12" y1="24" x2="38" y2="24" stroke="#BF360C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="12" y1="33" x2="40" y2="33" stroke="#BF360C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="12" y1="42" x2="36" y2="42" stroke="#BF360C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="12" y1="51" x2="42" y2="51" stroke="#BF360C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <!-- Label -->
+    <text x="25" y="90" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="monospace" font-size="11" font-weight="bold">EN</text>
+  </g>
+
+  <!-- Merge arrows -->
+  <g transform="translate(168, 72)">
+    <!-- Arrow from left -->
+    <path d="M 0,16 L 28,16" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <polygon points="26,10 38,16 26,22" fill="rgba(255,255,255,0.7)"/>
+    <!-- Arrow from right -->
+    <path d="M 76,16 L 48,16" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <polygon points="50,10 38,16 50,22" fill="rgba(255,255,255,0.7)"/>
+    <!-- Center merge dot -->
+    <circle cx="38" cy="16" r="5" fill="#FFCC80" stroke="white" stroke-width="1.5"/>
+  </g>
+
+  <!-- Right book -->
+  <g transform="translate(260, 52)">
+    <!-- Book body -->
+    <rect x="0" y="0" width="50" height="70" rx="3" ry="3" fill="url(#bookFill)" stroke="#BF360C" stroke-width="1.5"/>
+    <!-- Spine -->
+    <line x1="5" y1="0" x2="5" y2="70" stroke="#BF360C" stroke-width="1.5"/>
+    <!-- Text lines -->
+    <line x1="12" y1="15" x2="42" y2="15" stroke="#BF360C" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
+    <line x1="12" y1="24" x2="38" y2="24" stroke="#4E342E" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="12" y1="33" x2="40" y2="33" stroke="#BF360C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="12" y1="42" x2="36" y2="42" stroke="#4E342E" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <line x1="12" y1="51" x2="42" y2="51" stroke="#BF360C" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <!-- Label -->
+    <text x="25" y="90" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="monospace" font-size="11" font-weight="bold">ES</text>
+  </g>
+
+  <!-- Down arrow to merged book -->
+  <g transform="translate(197, 130)">
+    <line x1="8" y1="0" x2="8" y2="14" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+    <polygon points="1,12 8,22 15,12" fill="rgba(255,255,255,0.6)"/>
+  </g>
+
+  <!-- Merged book (larger) -->
+  <g transform="translate(170, 150)">
+    <rect x="0" y="0" width="70" height="36" rx="3" ry="3" fill="#FFCC80" stroke="#BF360C" stroke-width="1.5"/>
+    <line x1="6" y1="0" x2="6" y2="36" stroke="#BF360C" stroke-width="1.5"/>
+    <!-- Interleaved lines (two colors) -->
+    <line x1="13" y1="8" x2="60" y2="8" stroke="#BF360C" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+    <line x1="13" y1="14" x2="56" y2="14" stroke="#4E342E" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+    <line x1="13" y1="20" x2="58" y2="20" stroke="#BF360C" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+    <line x1="13" y1="26" x2="54" y2="26" stroke="#4E342E" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/>
+  </g>
+
+  <!-- Title -->
+  <text x="540" y="95" text-anchor="middle" fill="white" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="48" font-weight="700" letter-spacing="-1">
+    ePubLangMerger
+  </text>
+
+  <!-- Subtitle -->
+  <text x="540" y="130" text-anchor="middle" fill="rgba(255,255,255,0.75)" font-family="'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="400">
+    Merge bilingual ePubs, paragraph by paragraph
+  </text>
+</svg>
