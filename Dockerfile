@@ -12,7 +12,7 @@ RUN R -e "install.packages(c('XML', 'stringr', 'readr', 'devtools'))" \
 # Remove default Shiny examples
 RUN rm -rf /srv/shiny-server/*
 
-COPY server.R ui.R /srv/shiny-server/
+COPY server.R ui.R utils.R /srv/shiny-server/
 COPY www/ /srv/shiny-server/www/
 
 RUN chown -R shiny:shiny /srv/shiny-server

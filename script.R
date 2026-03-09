@@ -5,7 +5,7 @@
 #
 # Rcompression library: devtools::install_github("omegahat/Rcompression")
 
-library(XML)
+source("utils.R")
 
 # -- Argument parsing ----------------------------------------------------------
 
@@ -24,39 +24,9 @@ file1_name <- args[2]
 file2_name <- args[3]
 output_dir <- args[4]
 
-# -- Helper function -----------------------------------------------------------
-
-# Merge matching XML nodes from doc2 into doc1 as siblings,
-# renaming duplicate IDs in the second-language nodes.
-makeSibling <- function(nodes1, nodes2) {
-  if (length(nodes1) == 0) return()
-  n <- min(length(nodes1), length(nodes2))
-  for (i in seq_len(n)) {
-    attrs <- xmlAttrs(nodes2[[i]])
-    for (j in seq_along(attrs)) {
-      if (!is.null(attrs[[j]]) && (names(attrs)[j] == "id")) {
-        xmlAttrs(nodes2[[i]])[[j]] <- paste0(attrs[[j]], "_2")
-      }
-    }
-    addSibling(nodes1[[i]], nodes2[[i]])
-  }
-}
-
 # -- Derive filenames ----------------------------------------------------------
 
-archivo1 <- gsub("\\.epub$", "", file1_name)
-archivo2 <- gsub("\\.epub$", "", file2_name)
-
-parts1 <- unlist(strsplit(archivo1, "_"))
-parts2 <- unlist(strsplit(archivo2, "_"))
-
-if (length(parts1) == 2) {
-  archivoFINAL <- paste(parts1[1], parts1[2], parts2[2], sep = "_")
-} else if (length(parts1) == 3) {
-  archivoFINAL <- paste(parts1[1], parts1[2], parts2[2], parts1[3], sep = "_")
-} else {
-  archivoFINAL <- paste0(archivo1, "_merged")
-}
+archivoFINAL <- deriveOutputName(file1_name, file2_name)
 archivoFINALepub <- paste0(archivoFINAL, ".epub")
 
 # -- Extract the epub ZIP files ------------------------------------------------
@@ -65,8 +35,8 @@ epub1_path <- file.path(input_dir, file1_name)
 epub2_path <- file.path(input_dir, file2_name)
 
 work_dir <- tempdir()
-epub1_dir <- file.path(work_dir, archivo1)
-epub2_dir <- file.path(work_dir, archivo2)
+epub1_dir <- file.path(work_dir, gsub("\\.epub$", "", file1_name))
+epub2_dir <- file.path(work_dir, gsub("\\.epub$", "", file2_name))
 
 unzip(epub2_path, exdir = epub2_dir)
 unzip(epub1_path, exdir = epub1_dir)

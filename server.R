@@ -2,21 +2,10 @@ library(shiny)
 library(XML)
 library(stringr)
 
-# Merge matching XML nodes from doc2 into doc1 as siblings,
-# renaming duplicate IDs in the second-language nodes.
-makeSibling <- function(nodes1, nodes2) {
-  if (length(nodes1) == 0) return()
-  n <- min(length(nodes1), length(nodes2))
-  for (i in seq_len(n)) {
-    attrs <- xmlAttrs(nodes2[[i]])
-    for (j in seq_along(attrs)) {
-      if (!is.null(attrs[[j]]) && (names(attrs)[j] == "id")) {
-        xmlAttrs(nodes2[[i]])[[j]] <- paste0(attrs[[j]], "_2")
-      }
-    }
-    addSibling(nodes1[[i]], nodes2[[i]])
-  }
-}
+source("utils.R")
+
+# Allow ePub uploads up to 50 MB
+options(shiny.maxRequestSize = 50 * 1024^2)
 
 shinyServer(function(input, output, session) {
 
@@ -41,15 +30,7 @@ shinyServer(function(input, output, session) {
 
     tryCatch({
       # Build the final filename from the input names
-      archivo1 <- str_split(gsub('.{5}$', '', input$epub1$name), "_")
-      archivo2 <- str_split(gsub('.{5}$', '', input$epub2$name), "_")
-      if (length(archivo1[[1]]) == 2) {
-        archivoFINAL <- paste(archivo1[[1]][1], archivo1[[1]][2], archivo2[[1]][2], sep = "_")
-      } else if (length(archivo1[[1]]) == 3) {
-        archivoFINAL <- paste(archivo1[[1]][1], archivo1[[1]][2], archivo2[[1]][2], archivo1[[1]][3], sep = "_")
-      } else {
-        archivoFINAL <- paste0(gsub('.{5}$', '', input$epub1$name), "_merged")
-      }
+      archivoFINAL <- deriveOutputName(input$epub1$name, input$epub2$name)
       archivoFINALepub <- paste0(archivoFINAL, ".epub")
 
       # Check if the file was already generated in this session
