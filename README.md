@@ -1,17 +1,25 @@
-<p align="center">
+<p align="left">
   <img src="docs/images/banner.svg" alt="ePubLangMerger banner" width="900"/>
 </p>
 
-<p align="center">
-  <a href="https://www.r-project.org/"><img src="https://img.shields.io/badge/R-%3E%3D%203.5-276DC3?logo=r&logoColor=white" alt="R"></a>
-  <a href="https://shiny.posit.co/"><img src="https://img.shields.io/badge/Shiny-Web%20App-4479A1?logo=rstudio&logoColor=white" alt="Shiny"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-LGPL--3.0-blue.svg" alt="License: LGPL-3.0"></a>
-  <a href="https://github.com/GeiserX/ePubLangMerger/stargazers"><img src="https://img.shields.io/github/stars/GeiserX/ePubLangMerger?style=flat" alt="Stars"></a>
+<p align="left">
+  <a href="https://hub.docker.com/r/geiserx/epublangmerger"><img src="https://img.shields.io/docker/pulls/geiserx/epublangmerger?style=flat-square&logo=docker&logoColor=white" alt="Docker Pulls"></a>
+  <a href="https://github.com/GeiserX/ePubLangMerger/stargazers"><img src="https://img.shields.io/github/stars/GeiserX/ePubLangMerger?style=flat-square&logo=github" alt="Stars"></a>
+  <a href="https://github.com/GeiserX/ePubLangMerger/releases/latest"><img src="https://img.shields.io/github/v/release/GeiserX/ePubLangMerger?style=flat-square&logo=github" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/GeiserX/ePubLangMerger?style=flat-square" alt="License"></a>
 </p>
 
 ---
 
 **ePubLangMerger** is an R/Shiny application that takes two ePub files -- each in a different language -- and merges them into a single bilingual ePub. Every paragraph and heading from the second language is inserted as an XML sibling directly after the corresponding element in the first language, producing an interleaved, side-by-side reading experience.
+
+## Quick Start (Docker)
+
+```bash
+docker compose up -d
+```
+
+Then open http://localhost:3838
 
 ## Features
 
@@ -26,16 +34,17 @@
 
 | Dependency | Purpose |
 |---|---|
-| [R](https://cran.r-project.org/) (>= 3.5) | Runtime |
+| [Docker](https://docs.docker.com/get-docker/) (recommended) | Run the app with no manual dependency management |
+| [R](https://cran.r-project.org/) (>= 3.5) | Runtime (manual installation only) |
 | [shiny](https://cran.r-project.org/package=shiny) | Web application framework |
 | [XML](https://cran.r-project.org/package=XML) | XHTML parsing and manipulation |
 | [stringr](https://cran.r-project.org/package=stringr) | Filename string operations |
 | [readr](https://cran.r-project.org/package=readr) | File I/O for cached results |
 | [Rcompression](https://github.com/omegahat/Rcompression) | ePub (ZIP) creation |
 
-> **Note:** `Rcompression` is not on CRAN. Install it from GitHub (see below).
+> **Note:** `Rcompression` is not on CRAN. Install it from GitHub (see Manual Installation below).
 
-## Installation
+## Manual Installation (without Docker)
 
 ```bash
 git clone https://github.com/GeiserX/ePubLangMerger.git
@@ -50,6 +59,14 @@ devtools::install_github("omegahat/Rcompression")
 ```
 
 ## Usage
+
+### Docker
+
+```bash
+docker compose up -d
+```
+
+The web UI will be available at http://localhost:3838. Upload your two ePub files and download the merged result.
 
 ### Web UI (Shiny)
 
@@ -66,10 +83,14 @@ shiny::runApp(".", port = 8080, host = "0.0.0.0", launch.browser = TRUE)
 
 ### Command Line (Batch)
 
-Edit the variables at the top of `script.R` to set your input directory and filenames, then run:
+```bash
+Rscript script.R <input_dir> <file1.epub> <file2.epub> <output_dir>
+```
+
+Example:
 
 ```bash
-Rscript script.R
+Rscript script.R ./books MyBook_EN.epub MyBook_ES.epub ./output
 ```
 
 This mode is useful for automated pipelines or bulk processing.
@@ -91,6 +112,10 @@ The tool expects input filenames in the format `Title_LangCode.epub` (e.g., `MyB
 - Paragraph and heading counts should match across languages. When they differ, only the minimum overlapping count is merged; extra elements in the longer file are left untouched (not duplicated).
 - Only `<p>` and `<h1>` through `<h5>` elements are merged. Other block-level elements (e.g., `<blockquote>`, `<div>`, `<ul>`) are not processed.
 - The tool does not modify the ePub's OPF metadata (title, language, etc.).
+
+## Contributing
+
+Contributions are welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ## License
 

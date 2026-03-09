@@ -1,0 +1,12 @@
+.git
+.github
+.gitignore
+.RData
+.Rhistory
+.Rproj.user
+EpubMerger.Rproj
+docs/
+files/
+script.R
+LICENSE
+README.md

@@ -1,0 +1,7 @@
+services:
+  epublangmerger:
+    build: .
+    container_name: epublangmerger
+    ports:
+      - "3838:3838"
+    restart: unless-stopped

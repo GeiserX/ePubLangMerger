@@ -2,3 +2,7 @@ files/
 .RData
 .Rhistory
 .Rproj.user/
+*.Rproj.user
+output/
+*.epub
+.DS_Store

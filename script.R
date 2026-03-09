@@ -1,139 +1,132 @@
+#!/usr/bin/env Rscript
+#
+# CLI script for merging two epub files (same book, different languages).
+# Usage: Rscript script.R <input_dir> <file1.epub> <file2.epub> <output_dir>
+#
+# Rcompression library: devtools::install_github("omegahat/Rcompression")
+
 library(XML)
 
-makeSibling <- function(parrafos1, parrafos2){
-  if(length(parrafos1) != 0){
-    parrafoSHORT <- if(length(parrafos1) >= length(parrafos2)) length(parrafos2) else length(parrafos1)
-    for(i in 1:parrafoSHORT){
-      print(i)
-      for(j in 1:length(xmlAttrs(parrafos2[[i]]))){
-        print(j)
-        if(!is.null(xmlAttrs(parrafos2[[i]])[[j]]) && (names(xmlAttrs(parrafos2[[i]]))[j] == "id")){
-          xmlAttrs(parrafos2[[i]])[[j]] <- paste0(xmlAttrs(parrafos2[[i]])[[j]], "_2")
-        }
+# -- Argument parsing ----------------------------------------------------------
+
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) < 4) {
+  cat("Usage: Rscript script.R <input_dir> <file1.epub> <file2.epub> <output_dir>\n")
+  cat("  input_dir  - directory containing the two epub files\n")
+  cat("  file1.epub - first language epub filename\n")
+  cat("  file2.epub - second language epub filename\n")
+  cat("  output_dir - directory where the merged epub will be written\n")
+  quit(status = 1)
+}
+
+input_dir  <- args[1]
+file1_name <- args[2]
+file2_name <- args[3]
+output_dir <- args[4]
+
+# -- Helper function -----------------------------------------------------------
+
+# Merge matching XML nodes from doc2 into doc1 as siblings,
+# renaming duplicate IDs in the second-language nodes.
+makeSibling <- function(nodes1, nodes2) {
+  if (length(nodes1) == 0) return()
+  n <- min(length(nodes1), length(nodes2))
+  for (i in seq_len(n)) {
+    attrs <- xmlAttrs(nodes2[[i]])
+    for (j in seq_along(attrs)) {
+      if (!is.null(attrs[[j]]) && (names(attrs)[j] == "id")) {
+        xmlAttrs(nodes2[[i]])[[j]] <- paste0(attrs[[j]], "_2")
       }
-      addSibling(parrafos1[[i]], parrafos2[[i]])
     }
+    addSibling(nodes1[[i]], nodes2[[i]])
   }
 }
 
-###########################
-## Inicializamos valores ##
-###########################
+# -- Derive filenames ----------------------------------------------------------
 
-directorioPrincipal <- "/home/sergio/Escritorio/epub-lang-merger"
-archivo1 <- "w_S_20150915"
-archivo2 <- "w_BL_20150915"
-archivoFINAL <- "w_S_BL_20150915"
+archivo1 <- gsub("\\.epub$", "", file1_name)
+archivo2 <- gsub("\\.epub$", "", file2_name)
 
-archivoDIR1 <- paste0("/", archivo1)
-archivoDIR2 <- paste0("/", archivo2)
-directorioPrincipalData <- paste0(directorioPrincipal, "/data")
-archivoEPUB1 <- paste0(archivoDIR1, ".epub")
-dirDataEPub1 <- paste0("data", archivoEPUB1)
-dirData1 <- paste0("data", archivoDIR1)
-archivoEPUB2 <- paste0(archivoDIR2, ".epub")
-dirDataEPub2 <- paste0("data", archivoEPUB2)
-dirData2 <- paste0("data", archivoDIR2)
-archivoEPUBfinal <- paste0(archivoFINAL, ".epub")
+parts1 <- unlist(strsplit(archivo1, "_"))
+parts2 <- unlist(strsplit(archivo2, "_"))
 
-##############################
-## Extraemos los ZIP (ePub) ##
-##############################
+if (length(parts1) == 2) {
+  archivoFINAL <- paste(parts1[1], parts1[2], parts2[2], sep = "_")
+} else if (length(parts1) == 3) {
+  archivoFINAL <- paste(parts1[1], parts1[2], parts2[2], parts1[3], sep = "_")
+} else {
+  archivoFINAL <- paste0(archivo1, "_merged")
+}
+archivoFINALepub <- paste0(archivoFINAL, ".epub")
 
-setwd(directorioPrincipal)
-unzip(dirDataEPub2, exdir = dirData2)
-unzip(dirDataEPub1, exdir = dirData1)
+# -- Extract the epub ZIP files ------------------------------------------------
 
-###########################################################################
-## Extraemos todos los ficheros XHTML dentro del ePub del segundo idioma ##
-###########################################################################
+epub1_path <- file.path(input_dir, file1_name)
+epub2_path <- file.path(input_dir, file2_name)
 
-setwd(paste0(dirData2, "/OEBPS"))
-dirs2 <- dir(pattern = ".xhtml$")
-current2 <- sapply(dirs2, htmlParse)
-current2 <- sapply(current2, xmlRoot)
+work_dir <- tempdir()
+epub1_dir <- file.path(work_dir, archivo1)
+epub2_dir <- file.path(work_dir, archivo2)
 
-##########################################################################
-## Extraemos todos los ficheros XHTML dentro del ePub del primer idioma ##
-##########################################################################
+unzip(epub2_path, exdir = epub2_dir)
+unzip(epub1_path, exdir = epub1_dir)
 
-setwd(".."); setwd(".."); setwd("..");
-setwd(paste0(dirData1, "/OEBPS"))
-dirs1 <- dir(pattern = ".xhtml$")
-current1 <- sapply(dirs1, htmlParse)
-current1 <- sapply(current1, xmlRoot)
+# -- Parse XHTML files from the second-language epub ---------------------------
 
-###############################################################################################################
-## Buscamos y cambiamos atributo ID del segundo idioma para cada documento. También lo añadimos como Sibling ##
-###############################################################################################################
+dirs2 <- dir(path = file.path(epub2_dir, "OEBPS"), pattern = "\\.xhtml$")
+full_paths2 <- file.path(epub2_dir, "OEBPS", dirs2)
+current2 <- sapply(full_paths2, function(f) xmlRoot(htmlParse(f)))
 
-for(k in 1:length(current1)){
-  
-  parrafos2 <- xpathSApply(current2[[k]], "//p")
-  parrafos1 <- xpathSApply(current1[[k]], "//p")
-  makeSibling(parrafos1, parrafos2)
-  
-  parrafos2 <- xpathSApply(current2[[k]], "//h1")
-  parrafos1 <- xpathSApply(current1[[k]], "//h1")
-  makeSibling(parrafos1, parrafos2)
-  
-  parrafos2 <- xpathSApply(current2[[k]], "//h2")
-  parrafos1 <- xpathSApply(current1[[k]], "//h2")
-  makeSibling(parrafos1, parrafos2)
-  
-  parrafos2 <- xpathSApply(current2[[k]], "//h3")
-  parrafos1 <- xpathSApply(current1[[k]], "//h3")
-  makeSibling(parrafos1, parrafos2)
-  
-  parrafos2 <- xpathSApply(current2[[k]], "//h4")
-  parrafos1 <- xpathSApply(current1[[k]], "//h4")
-  makeSibling(parrafos1, parrafos2)
-  
-  parrafos2 <- xpathSApply(current2[[k]], "//h5")
-  parrafos1 <- xpathSApply(current1[[k]], "//h5")
-  makeSibling(parrafos1, parrafos2)
-  
+# -- Parse XHTML files from the first-language epub ----------------------------
+
+dirs1 <- dir(path = file.path(epub1_dir, "OEBPS"), pattern = "\\.xhtml$")
+full_paths1 <- file.path(epub1_dir, "OEBPS", dirs1)
+current1 <- sapply(full_paths1, function(f) xmlRoot(htmlParse(f)))
+
+# -- Merge second-language content as siblings ---------------------------------
+
+for (k in seq_along(current1)) {
+  for (tag in c("p", "h1", "h2", "h3", "h4", "h5")) {
+    nodes2 <- xpathSApply(current2[[k]], paste0("//", tag))
+    nodes1 <- xpathSApply(current1[[k]], paste0("//", tag))
+    makeSibling(nodes1, nodes2)
+  }
 }
 
-####################################
-## Guardamos en una nueva carpeta ##
-####################################
+# -- Save merged content into a new directory ----------------------------------
 
-setwd("..")
-dir <- dir()
-setwd("..")
-# Para borrar:
-if(dir.exists(archivoFINAL)) unlink(archivoFINAL, recursive = TRUE)
-dir.create(archivoFINAL)
-for(l in 1:length(dir)){ # Copiamos desde el directorio del primer idioma
-  file.copy(from = paste0(paste0(archivo1, "/"), dir[l]), to = paste0(archivoFINAL, "/"), recursive = TRUE)
-}
-setwd(paste0(archivoFINAL, "/OEBPS"))
+merged_dir <- file.path(work_dir, archivoFINAL)
+if (dir.exists(merged_dir)) unlink(merged_dir, recursive = TRUE)
+dir.create(merged_dir)
 
-for(z in 1:length(dirs1)){ # Sobreescribimos con el nuevo archivo
-  
-  saveXML(doc = current1[[z]], file = dirs1[z], prefix = '<?xml version="1.0" encoding="utf-8" ?>\n')
-  
-  #   sink(dirs1[z])
-  #   print(current1[[z]])
-  #   #cat(capture.output(current1[[z]])[-1], sep = "\n")
-  #   sink()
-  
+# Copy all contents from the first-language epub directory
+epub1_contents <- dir(path = epub1_dir)
+for (item in epub1_contents) {
+  file.copy(
+    from = file.path(epub1_dir, item),
+    to = file.path(merged_dir, ""),
+    recursive = TRUE
+  )
 }
 
-######################
-## Cambiamos título ##
-######################
+# Overwrite XHTML files with the merged content
+for (z in seq_along(dirs1)) {
+  saveXML(
+    doc = current1[[z]],
+    file = file.path(merged_dir, "OEBPS", dirs1[z]),
+    prefix = '<?xml version="1.0" encoding="utf-8" ?>\n'
+  )
+}
 
+# -- Create the merged epub (zip) ----------------------------------------------
 
-##################
-## Creamos ePub ##
-##################
+dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
+output_path <- file.path(output_dir, archivoFINALepub)
+if (file.exists(output_path)) file.remove(output_path)
 
-setwd("..")
-dirs <- list.files(recursive = T)
-# Para borrar
+old_wd <- setwd(merged_dir)
+on.exit(setwd(old_wd), add = TRUE)
+Rcompression::zip(zipfile = output_path, files = list.files(recursive = TRUE))
+setwd(old_wd)
 
-if(file.exists(paste(directorioPrincipalData, archivoEPUBfinal, sep = "/"))) file.remove(paste(directorioPrincipalData, archivoEPUBfinal, sep = "/"))
-Rcompression::zip(zipfile = paste(directorioPrincipalData, archivoEPUBfinal, sep = "/"), files = dirs)
-# Rcompression library devtools::install_github("omegahat/Rcompression")
+cat("Created:", output_path, "\n")
