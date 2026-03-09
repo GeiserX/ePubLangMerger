@@ -1,5 +1,6 @@
 services:
   epublangmerger:
+    image: drumsergio/epublangmerger:latest
     build: .
     container_name: epublangmerger
     ports:
