@@ -1,4 +1,4 @@
-FROM rocker/shiny:4.4
+FROM --platform=linux/amd64 rocker/shiny:4.4
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2-dev \
