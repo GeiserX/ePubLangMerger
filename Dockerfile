@@ -6,8 +6,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN R -e "install.packages(c('XML', 'stringr', 'readr', 'devtools'))" \
-    && R -e "devtools::install_github('omegahat/Rcompression')"
+RUN R -e "install.packages(c('XML', 'stringr', 'readr', 'remotes'))" \
+    && R -e "remotes::install_github('omegahat/Rcompression')"
 
 # Remove default Shiny examples
 RUN rm -rf /srv/shiny-server/*
