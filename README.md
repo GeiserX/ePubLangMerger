@@ -117,6 +117,11 @@ The tool expects input filenames in the format `Title_LangCode.epub` (e.g., `MyB
 - Only `<p>` and `<h1>` through `<h5>` elements are merged. Other block-level elements (e.g., `<blockquote>`, `<div>`, `<ul>`) are not processed.
 - The tool does not modify the ePub's OPF metadata (title, language, etc.).
 
+## Related Projects
+
+- [AskePub](https://github.com/GeiserX/AskePub) — Telegram bot for ePub annotation with GPT-4
+- [epub-and-vtt-to-llm](https://github.com/GeiserX/epub-and-vtt-to-llm) — Fine-tune LLMs from ePub and subtitle data
+
 ## Contributing
 
 Contributions are welcome. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
