@@ -3,6 +3,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/GeiserX/ePubLangMerger/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/GeiserX/ePubLangMerger/ci.yml?style=flat-square&logo=github&label=CI" alt="CI"></a>
   <a href="https://hub.docker.com/r/geiserx/epublangmerger"><img src="https://img.shields.io/docker/pulls/geiserx/epublangmerger?style=flat-square&logo=docker&logoColor=white" alt="Docker Pulls"></a>
   <a href="https://github.com/GeiserX/ePubLangMerger/stargazers"><img src="https://img.shields.io/github/stars/GeiserX/ePubLangMerger?style=flat-square&logo=github" alt="Stars"></a>
   <a href="https://github.com/GeiserX/ePubLangMerger/releases/latest"><img src="https://img.shields.io/github/v/release/GeiserX/ePubLangMerger?style=flat-square&logo=github" alt="Release"></a>
