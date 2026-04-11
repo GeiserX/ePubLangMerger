@@ -1,12 +1,8 @@
 library(testthat)
 library(XML)
 
-# Source the utils file (adjust path for test runner context)
-source_file <- file.path(
-  if (Sys.getenv("GITHUB_WORKSPACE") != "") Sys.getenv("GITHUB_WORKSPACE") else "../..",
-  "utils.R"
-)
-source(source_file)
+# Source the utils file relative to repo root
+source(file.path(Sys.getenv("GITHUB_WORKSPACE", unset = getwd()), "utils.R"))
 
 # =============================================================================
 # deriveOutputName

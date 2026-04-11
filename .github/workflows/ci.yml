@@ -15,7 +15,7 @@ jobs:
       - name: Install test dependencies
         run: |
           Rscript -e 'install.packages(c("testthat", "XML"), repos = "https://cloud.r-project.org/")'
-      - run: Rscript -e 'testthat::test_dir("tests")'
+      - run: Rscript -e 'testthat::test_dir("tests/testthat")'
 
   docker-build:
     runs-on: ubuntu-latest
