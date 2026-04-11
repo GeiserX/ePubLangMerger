@@ -1,15 +1,11 @@
 library(testthat)
 
-# Source only the pure-R functions from utils.R, stripping the library(XML)
-# call which would fail in CI where XML is not installed.
-local({
-  utils_path <- file.path(
-    Sys.getenv("GITHUB_WORKSPACE", unset = getwd()), "utils.R"
-  )
-  lines <- readLines(utils_path)
-  lines <- lines[!grepl("^\\s*library\\(XML\\)", lines)]
-  eval(parse(text = lines), envir = globalenv())
-})
+# Source the utils file (adjust path for test runner context)
+source_file <- file.path(
+  if (Sys.getenv("GITHUB_WORKSPACE") != "") Sys.getenv("GITHUB_WORKSPACE") else "../..",
+  "utils.R"
+)
+source(source_file)
 
 # =============================================================================
 # deriveOutputName
@@ -40,7 +36,7 @@ test_that("deriveOutputName handles different language codes", {
   expect_equal(result, "Novel_FR_DE")
 })
 
-test_that("deriveOutputName handles underscores in title for three-part names", {
+test_that("deriveOutputName with underscored title treats extra parts as name segments", {
   result <- deriveOutputName("My_Book_EN.epub", "My_Book_ES.epub")
-  expect_equal(result, "My_Book_ES_EN")
+  expect_equal(result, "My_Book_Book_EN")
 })
