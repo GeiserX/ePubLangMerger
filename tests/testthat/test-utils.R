@@ -1,11 +1,15 @@
 library(testthat)
 
-# Source the utils file (adjust path for test runner context)
-source_file <- file.path(
-  if (Sys.getenv("GITHUB_WORKSPACE") != "") Sys.getenv("GITHUB_WORKSPACE") else "../..",
-  "utils.R"
-)
-source(source_file)
+# Source only the pure-R functions from utils.R, stripping the library(XML)
+# call which would fail in CI where XML is not installed.
+local({
+  utils_path <- file.path(
+    Sys.getenv("GITHUB_WORKSPACE", unset = getwd()), "utils.R"
+  )
+  lines <- readLines(utils_path)
+  lines <- lines[!grepl("^\\s*library\\(XML\\)", lines)]
+  eval(parse(text = lines), envir = globalenv())
+})
 
 # =============================================================================
 # deriveOutputName
