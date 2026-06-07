@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: [self-hosted, Linux, X64]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Wait for dpkg lock
         run: |
           for i in $(seq 1 30); do
@@ -33,6 +33,6 @@ jobs:
   docker-build:
     runs-on: [self-hosted, Linux, X64]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build Docker image
         run: docker build -t epublangmerger .
