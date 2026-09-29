@@ -1,6 +1,7 @@
 services:
   epublangmerger:
-    image: drumsergio/epublangmerger:latest
+    image: drumsergio/epublangmerger:1.1.1
+    platform: linux/amd64
     build: .
     container_name: epublangmerger
     ports:
