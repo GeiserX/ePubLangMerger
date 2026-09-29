@@ -25,4 +25,4 @@ Use it in scripts or to merge many books in a row.
 
 ## Filename convention
 
-The tool expects input filenames in the format `Title_LangCode.epub`, for example `MyBook_EN.epub` and `MyBook_ES.epub`. The merged file combines both language codes, `MyBook_EN_ES.epub`, and keeps an optional trailing segment such as a date.
+The tool expects input filenames in the format `Title_LangCode.epub`, for example `MyBook_EN.epub` and `MyBook_ES.epub`. The tool reads the last underscore-separated part of each name as the language code, and the merged file combines both codes: `MyBook_EN_ES.epub`. A name with no underscore gives `<name>_merged.epub`.

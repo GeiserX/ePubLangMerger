@@ -2,12 +2,12 @@
 
 ## Chapters are missing or paired with the wrong chapter
 
-- **Cause:** both ePubs need the same internal structure, meaning the same number of XHTML chapter files with matching filenames inside `OEBPS/`.
+- **Cause:** the tool pairs the XHTML chapter files inside `OEBPS/` by position, not by name: the first file of one ePub with the first file of the other, and so on. Both ePubs need the same number of chapter files in the same order.
 - **Fix:** use two editions built the same way (same publisher and same conversion tool), so the chapter files line up.
 
 ## The end of a chapter is in one language only
 
-- **Cause:** paragraph and heading counts differ between the two languages. The tool merges only as many elements as the shorter file has; the extra elements of the longer file stay as they are, in one language.
+- **Cause:** paragraph and heading counts differ between the two languages. For each tag, the tool pairs only as many elements as the shorter chapter has. Unpaired first-language elements stay in the output; unpaired second-language elements are dropped.
 - **Fix:** none in the tool; the merge is positional. Check that both editions split paragraphs the same way.
 
 ## Quotes, lists or boxes are not merged
