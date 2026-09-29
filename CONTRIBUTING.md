@@ -6,7 +6,7 @@ Thanks for your interest in contributing. This guide covers setup, running, and 
 
 ### Prerequisites
 
-- R (>= 3.5) with the packages listed in the README (`shiny`, `XML`, `stringr`, `readr`, `Rcompression`)
+- R 4.x with the packages listed in [docs/getting-started.md](docs/getting-started.md) (`shiny`, `XML`, `stringr`, `Rcompression`)
 - Docker and Docker Compose (for containerized development)
 
 ### Local Development
@@ -21,8 +21,8 @@ Thanks for your interest in contributing. This guide covers setup, running, and 
 2. Install R dependencies (from an R session):
 
    ```r
-   install.packages(c("shiny", "XML", "stringr", "readr"))
-   devtools::install_github("omegahat/Rcompression")
+   install.packages(c("shiny", "XML", "stringr", "remotes"))
+   remotes::install_github("omegahat/Rcompression")
    ```
 
 3. Run the app:
