@@ -32,3 +32,23 @@ updates:
         applies-to: security-updates
         patterns:
           - '*'
+  # The docs toolchain is a separate install: docs.yml pip-installs
+  # docs/requirements-docs.txt to run MkDocs.
+  - package-ecosystem: pip
+    directory: /docs
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: docs
+    labels:
+      - documentation
+      - automated
+    groups:
+      docs_toolchain:
+        patterns:
+          - '*'
+      docs_security:
+        applies-to: security-updates
+        patterns:
+          - '*'
