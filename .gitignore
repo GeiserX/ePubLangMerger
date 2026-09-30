@@ -6,3 +6,6 @@ files/
 output/
 *.epub
 .DS_Store
+
+# MkDocs build output
+site/
