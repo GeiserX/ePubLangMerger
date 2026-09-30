@@ -22,7 +22,7 @@ ePubLangMerger is an R/Shiny web application that merges two ePub files of the s
 
 - Pairs the `<p>` and `<h1>` to `<h5>` elements of both ePubs and interleaves them as XML siblings.
 - Names the merged file from the input filenames and their language codes.
-- Serves a pair it has already merged in the same browser session from its cache, without merging it again.
+- Within one browser session, hands back the cached book for any pair that gives the same output name, without a new merge.
 - Web UI: upload two ePub files, click "Go!" and download the result.
 - Command-line mode: `script.R` does the same merge without the UI, for scripts and batch runs.
 - Adds a `_2` suffix to every `id` attribute from the second ePub, so XHTML IDs never collide.

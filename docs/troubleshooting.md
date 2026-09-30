@@ -22,8 +22,8 @@
 
 ## A new file gives the same merged book as before
 
-- **Cause:** within one browser session the tool keeps each merged book under its output name, and serves it again for any later pair with the same file names, without merging again.
-- **Fix:** reload the page to start a new session, or give the new file a different name.
+- **Cause:** within one browser session the tool keeps each merged book under its output name, and hands it back for any later pair that gives the same output name, without a new merge. The output name comes from the first file's name and only the language code of the second (see [Usage](usage.md)), so after merging `MyBook_EN.epub` with `MyBook_ES.epub`, pairing `MyBook_EN.epub` with a different book named `Other_ES.epub` gives the same `MyBook_EN_ES.epub` and the old result.
+- **Fix:** reload the page to start a new session. Renaming a file helps only when it changes the output name.
 
 ## The reader shows the title or language of the first ePub
 
