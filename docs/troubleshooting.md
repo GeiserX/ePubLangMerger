@@ -12,8 +12,18 @@
 
 ## Quotes, lists or boxes are not merged
 
-- **Cause:** only `<p>` and `<h1>` through `<h5>` elements are merged. The tool skips other block elements such as `<blockquote>`, `<div>` and `<ul>`.
-- **Fix:** none today; those elements appear in the first language only.
+- **Cause:** only `<p>` and `<h1>` through `<h5>` elements are merged, wherever they sit: a `<p>` inside a `<blockquote>` or a `<div>` is merged, but text written straight into a list item (`<li>`), a table cell or a `<div>` without a `<p>` is not.
+- **Fix:** none today; that text appears in the first language only.
+
+## The merged book is the first ePub, unchanged
+
+- **Cause:** the tool reads only the chapter files inside `OEBPS/` whose names end in `.xhtml`. When the first ePub keeps its chapters anywhere else (`OPS/`, `EPUB/text/`, the top of the archive) or names them `.html`, there is nothing to merge, and the tool zips the first ePub as it was. When the second ePub is the one laid out that way, the merge stops with `Error: subscript out of bounds`.
+- **Fix:** none in the tool today. An ePub is a ZIP file: list it (`unzip -l book.epub`) before merging and check that both keep their chapters as `OEBPS/*.xhtml`.
+
+## A new file gives the same merged book as before
+
+- **Cause:** within one browser session the tool keeps each merged book under its output name, and serves it again for any later pair with the same file names, without merging again.
+- **Fix:** reload the page to start a new session, or give the new file a different name.
 
 ## The reader shows the title or language of the first ePub
 
@@ -22,4 +32,4 @@
 
 ## Reporting a bug
 
-Open an issue at https://github.com/GeiserX/ePubLangMerger/issues with the two input filenames, how you ran the tool (Docker, R or `script.R`), the error message or the R console output, and, if you can share them, the two ePubs.
+Open an [issue](https://github.com/GeiserX/ePubLangMerger/issues) with the two input filenames, how you ran the tool (Docker, R or `script.R`), the error message or the R console output, and, if you can share them, the two ePubs.

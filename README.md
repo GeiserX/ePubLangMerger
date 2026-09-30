@@ -22,7 +22,7 @@ ePubLangMerger is an R/Shiny web application that merges two ePub files of the s
 
 - Pairs the `<p>` and `<h1>` to `<h5>` elements of both ePubs and interleaves them as XML siblings.
 - Names the merged file from the input filenames and their language codes.
-- Serves a pair it has already merged from its cache, without merging it again.
+- Serves a pair it has already merged in the same browser session from its cache, without merging it again.
 - Web UI: upload two ePub files, click "Go!" and download the result.
 - Command-line mode: `script.R` does the same merge without the UI, for scripts and batch runs.
 - Adds a `_2` suffix to every `id` attribute from the second ePub, so XHTML IDs never collide.
@@ -36,14 +36,17 @@ curl -fsSLO https://raw.githubusercontent.com/GeiserX/ePubLangMerger/main/docker
 docker compose up -d
 ```
 
-Open http://localhost:3838. Manual install without Docker: [getting started](https://github.com/GeiserX/ePubLangMerger/blob/main/docs/getting-started.md).
+Open http://localhost:3838. Manual install without Docker: [getting started](https://geiserx.github.io/ePubLangMerger/getting-started/#manual-installation-without-docker).
 
 ## Documentation
 
-- [Getting started](https://github.com/GeiserX/ePubLangMerger/blob/main/docs/getting-started.md): prerequisites, Docker and manual install, first run.
-- [Usage](https://github.com/GeiserX/ePubLangMerger/blob/main/docs/usage.md): the web UI, the command line and the filename convention.
-- [How it works](https://github.com/GeiserX/ePubLangMerger/blob/main/docs/how-it-works.md): extract, parse, merge, reassemble.
-- [Troubleshooting](https://github.com/GeiserX/ePubLangMerger/blob/main/docs/troubleshooting.md): the limits of the merge and what they look like.
+The docs are at [geiserx.github.io/ePubLangMerger](https://geiserx.github.io/ePubLangMerger/).
+
+- [Getting started](https://geiserx.github.io/ePubLangMerger/getting-started/): prerequisites, Docker and manual install, first run.
+- [Usage](https://geiserx.github.io/ePubLangMerger/usage/): the web UI, the command line and the filename convention.
+- [How it works](https://geiserx.github.io/ePubLangMerger/how-it-works/): extract, parse, merge, reassemble.
+- [Troubleshooting](https://geiserx.github.io/ePubLangMerger/troubleshooting/): the limits of the merge and what they look like.
+- [Development](https://geiserx.github.io/ePubLangMerger/development/): tests, the image build and releases.
 
 Contributions: see [CONTRIBUTING.md](https://github.com/GeiserX/ePubLangMerger/blob/main/CONTRIBUTING.md).
 
