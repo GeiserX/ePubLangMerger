@@ -7,8 +7,9 @@ output/
 *.epub
 .DS_Store
 
-# MkDocs build output
+# Docs build output (Zensical writes site/ and its build cache .cache/)
 site/
+.cache/
 
 # Beads: bead text lives in the Dolt tracker only, never in git
 .beads/issues.jsonl

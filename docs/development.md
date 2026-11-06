@@ -37,11 +37,12 @@ Every pull request runs `test` and `docker-build` from `ci.yml`, and the strict 
 
 ## Docs
 
-The site is built by MkDocs Material from `docs/` and `mkdocs.yml`:
+The site is built by [Zensical](https://zensical.org/) from `docs/` and `zensical.toml`:
 
 ```bash
 pip install -r docs/requirements-docs.txt
-mkdocs build --strict
+python -m zensical build --clean --strict
+python -I .github/scripts/site-check.py site
 ```
 
-The same strict build runs on every pull request, and a push to `main` that changes the docs deploys the site. How to send a change: [CONTRIBUTING.md](https://github.com/GeiserX/ePubLangMerger/blob/main/CONTRIBUTING.md).
+The second command checks what the strict build does not: a page left out of the nav, a nav entry for a missing file, a missing image and a link rooted at `/`. The same two commands run on every pull request, and a push to `main` that changes the docs deploys the site. How to send a change: [CONTRIBUTING.md](https://github.com/GeiserX/ePubLangMerger/blob/main/CONTRIBUTING.md).
